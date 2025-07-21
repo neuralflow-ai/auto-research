@@ -2,6 +2,7 @@ const axios = require('axios');
 const { GEMINI_API_KEY } = require('./config');
 
 async function generateUrduScript(topic) {
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + GEMINI_API_KEY;
   // New prompt for serious, analytical, fact-based Urdu news script
   const prompt = `ایک 5-10 منٹ کا اردو نیوز اسکرپٹ لکھیں جو پاکستانی نیوز چینل کے اینکر کے لیے ہو۔
 
@@ -108,4 +109,35 @@ async function generateUrduScript(topic) {
   }
 }
 
-module.exports = { generateUrduScript }; 
+// Translate text to English using Gemini
+async function translateToEnglish(text) {
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + GEMINI_API_KEY;
+  const prompt = `Translate the following text to English.\nText: ${text}`;
+  try {
+    const response = await axios.post(url, {
+      contents: [{ parts: [{ text: prompt }] }],
+    });
+    return response.data.candidates?.[0]?.content?.parts?.[0]?.text || text;
+  } catch (err) {
+    console.error('Gemini translation error:', err.response?.data || err.message);
+    return text;
+  }
+}
+
+// Check if script is relevant to topic using Gemini
+async function checkScriptRelevance(topic, script) {
+  const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + GEMINI_API_KEY;
+  const prompt = `Is the following news script relevant to the topic?\nTopic: ${topic}\nScript: ${script}\nAnswer only "yes" or "no".`;
+  try {
+    const response = await axios.post(url, {
+      contents: [{ parts: [{ text: prompt }] }],
+    });
+    const answer = response.data.candidates?.[0]?.content?.parts?.[0]?.text?.toLowerCase() || '';
+    return answer.includes('yes');
+  } catch (err) {
+    console.error('Gemini relevance check error:', err.response?.data || err.message);
+    return false;
+  }
+}
+
+module.exports = { generateUrduScript, translateToEnglish, checkScriptRelevance }; 

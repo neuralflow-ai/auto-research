@@ -1,3 +1,5 @@
-2025/07/20-19:31:01.913 3cf8 Reusing MANIFEST C:\Users\The Laptop Hut\Downloads\auto\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
-2025/07/20-19:31:01.913 3cf8 Recovering log #4
-2025/07/20-19:31:01.913 3cf8 Reusing old log C:\Users\The Laptop Hut\Downloads\auto\.wwebjs_auth\session\Default\Local Storage\leveldb/000004.log 
+2025/07/21-07:43:38.857 52c8 Reusing MANIFEST C:\Users\The Laptop Hut\Downloads\auto\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
+2025/07/21-07:43:38.858 52c8 Recovering log #10
+2025/07/21-07:43:38.860 52c8 Level-0 table #13: started
+2025/07/21-07:43:38.864 52c8 Level-0 table #13: 16611 bytes OK
+2025/07/21-07:43:38.866 52c8 Delete type=0 #10

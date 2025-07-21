@@ -1,226 +1,82 @@
 [
   {
-    "title": "India-Pak clash at Legends Championship called off after Indian players withdraw",
-    "url": "https://economictimes.indiatimes.com/news/sports/india-pak-clash-at-legends-championship-called-off-after-indian-players-withdraw/articleshow/122792245.cms",
-    "source": "NewsAPI",
-    "region": "Pakistan",
-    "priority": 1,
-    "publishedAt": "2025-07-20T00:54:52Z"
-  },
-  {
-    "title": "Breaking News Live Updates: WCL England 2025 calls off India vs Pakistan match",
-    "url": "https://m.economictimes.com/news/newsblogs/india-news-live-updates-july-20-2025-weather-today-rain-alert-world-championship-of-legends-india-vs-pakistan-match-donald-trump-india-pakistan-ukraine-russia/liveblog/122792184.cms",
-    "source": "NewsAPI",
-    "region": "Pakistan",
-    "priority": 1,
-    "publishedAt": "2025-07-20T00:50:44Z"
-  },
-  {
-    "title": "Do not support match that includes Pakistan, says EaseMyTrip as key Indian players opt out of India-Pak clash",
-    "url": "https://economictimes.indiatimes.com/news/india/do-not-support-match-that-includes-pakistan-says-easemytrip-as-key-indian-players-opt-out-of-india-pak-clash/articleshow/122792037.cms",
-    "source": "NewsAPI",
-    "region": "Pakistan",
-    "priority": 1,
-    "publishedAt": "2025-07-20T00:38:46Z"
-  },
-  {
-    "title": "(no subject)",
-    "url": "https://seclists.org/risks/2025/q3/1",
-    "source": "NewsAPI",
-    "region": "Pakistan",
-    "priority": 1,
-    "publishedAt": "2025-07-20T00:06:23Z"
-  },
-  {
-    "title": "Drug-making not viable without price adjustment",
-    "url": "https://www.thedailystar.net/business/economy/interview/news/drug-making-not-viable-without-price-adjustment-3943486",
-    "source": "NewsAPI",
-    "region": "Pakistan",
-    "priority": 1,
-    "publishedAt": "2025-07-19T23:11:37Z"
-  },
-  {
-    "title": "OPEC Is Playing The Long Game",
-    "url": "https://oilprice.com/Energy/Crude-Oil/OPEC-Is-Playing-The-Long-Game41576.html",
-    "source": "NewsAPI",
-    "region": "Pakistan",
-    "priority": 1,
-    "publishedAt": "2025-07-19T23:00:00Z"
-  },
-  {
-    "title": "Minorities enjoying absolute freedom in India due to Hindu majority: Rijiju",
-    "url": "https://thehillstimes.in/northeast/minorities-enjoying-absolute-freedom-in-india-due-to-hindu-majority-rijiju",
-    "source": "NewsAPI",
-    "region": "Pakistan",
-    "priority": 1,
-    "publishedAt": "2025-07-19T22:40:00Z"
-  },
-  {
-    "title": "Bangladesh’s largest Islamist party rallies for fair elections",
-    "url": "https://www.aljazeera.com/news/2025/7/19/bangladeshs-largest-islamist-party-rallies-for-fair-elections",
-    "source": "NewsAPI",
-    "region": "Pakistan",
-    "priority": 1,
-    "publishedAt": "2025-07-19T21:34:27Z"
-  },
-  {
-    "title": "WH: Russia must agree ceasefire to avoid tariffs",
-    "url": "https://freerepublic.com/focus/f-chat/4329228/posts",
-    "source": "NewsAPI",
-    "region": "Super Powers",
-    "priority": 2,
-    "publishedAt": "2025-07-17T19:02:47Z"
-  },
-  {
-    "title": "Links 7/15/2025",
-    "url": "https://www.nakedcapitalism.com/2025/07/links-7-15-2025.html",
-    "source": "NewsAPI",
-    "region": "Super Powers",
-    "priority": 2,
-    "publishedAt": "2025-07-15T10:55:00Z"
-  },
-  {
-    "title": "Links 7/11/2025",
-    "url": "https://www.nakedcapitalism.com/2025/07/links-7-11-2025.html",
-    "source": "NewsAPI",
-    "region": "Super Powers",
-    "priority": 2,
-    "publishedAt": "2025-07-11T10:55:14Z"
-  },
-  {
-    "title": "Links 7/2/2025",
-    "url": "https://www.nakedcapitalism.com/2025/07/links-7-2-2025.html",
-    "source": "NewsAPI",
-    "region": "Super Powers",
-    "priority": 2,
-    "publishedAt": "2025-07-02T10:55:55Z"
-  },
-  {
-    "title": "CNN Tops 2025 News Emmy Wins; ‘The Whole Story with Anderson Cooper’ and ABC’s ‘World News Tonight with David Muir’ Land Key Program Prizes",
-    "url": "https://variety.com/2025/tv/news/news-emmys-2025-winners-cnn-leads-world-news-tonight-best-1236441508/",
-    "source": "NewsAPI",
-    "region": "Super Powers",
-    "priority": 2,
-    "publishedAt": "2025-06-26T05:46:06Z"
-  },
-  {
-    "title": "Iran-Linked Threat Actors Cyber Fattah Leak Visitors and Athletes’ Data from Saudi Games",
-    "url": "https://securityaffairs.com/179239/cyber-warfare-2/iran-linked-threat-actors-cyber-fattah-leak-visitors-and-athletes-data-from-saudi-games.html",
-    "source": "NewsAPI",
-    "region": "Super Powers",
-    "priority": 2,
-    "publishedAt": "2025-06-23T08:23:31Z"
-  },
-  {
-    "title": "Israel bombs and starves Gaza with no end in sight",
-    "url": "https://electronicintifada.net/blogs/nora-barrows-friedman/israel-bombs-and-starves-gaza-no-end-sight",
-    "source": "NewsAPI",
-    "region": "Middle East Conflict",
+    "title": "James Gunn says he almost cut out one Superman scene as audiences didn't like it but he 'missed it'",
+    "url": "https://www.themirror.com/entertainment/movies/james-gunn-superman-scene-cut-1279742",
+    "source": "themirror",
+    "region": "united states of america",
     "priority": 3,
-    "publishedAt": "2025-07-18T15:31:12Z"
+    "publishedAt": "2025-07-21 02:43:40"
   },
   {
-    "title": "The Crisis of Antisemitism on Campus and Where It’s Coming From",
-    "url": "https://www.americanthinker.com/articles/2025/07/the_crisis_of_antisemitism_on_campus_and_where_it_s_coming_from.html",
-    "source": "NewsAPI",
-    "region": "Middle East Conflict",
+    "title": "UK consumer sentiment suffers first big fall in nearly three years, Deloitte says",
+    "url": "https://www.nst.com.my/business/economy/2025/07/1247833/uk-consumer-sentiment-suffers-first-big-fall-nearly-three-years",
+    "source": "nst",
+    "region": "malaysia",
     "priority": 3,
-    "publishedAt": "2025-07-18T04:00:00Z"
+    "publishedAt": "2025-07-21 02:43:29"
   },
   {
-    "title": "Israel Admits to Strike on Only Remaining Gaza Church – Stray Ammunition Hit Holy Family Church Killing Three",
-    "url": "https://www.thegatewaypundit.com/2025/07/israel-admits-strike-only-remaining-gaza-church-stray/",
-    "source": "NewsAPI",
-    "region": "Middle East Conflict",
+    "title": "AG flags weak enforcement of subsidised cooking oil programme",
+    "url": "https://www.nst.com.my/news/nation/2025/07/1247847/ag-flags-weak-enforcement-subsidised-cooking-oil-programme",
+    "source": "nst",
+    "region": "malaysia",
     "priority": 3,
-    "publishedAt": "2025-07-17T23:00:41Z"
+    "publishedAt": "2025-07-21 02:43:29"
   },
   {
-    "title": "“Never Again Means Never Again For Anyone”: An Interview With Sim Kern",
-    "url": "https://www.motherjones.com/politics/2025/07/sim-kern-genocide-bad-palestine-book/",
-    "source": "NewsAPI",
-    "region": "Middle East Conflict",
+    "title": "AG's Report: 'Serious irregularities' in UKM tenders worth RM58.4 million",
+    "url": "https://www.nst.com.my/news/nation/2025/07/1247848/ags-report-serious-irregularities-ukm-tenders-worth-rm584-million",
+    "source": "nst",
+    "region": "malaysia",
     "priority": 3,
-    "publishedAt": "2025-07-16T16:42:52Z"
+    "publishedAt": "2025-07-21 02:43:28"
   },
   {
-    "title": "UK Weighs Sanctions Over Israel’s ‘Humanitarian City’ Proposal",
-    "url": "https://financialpost.com/pmn/business-pmn/uk-weighs-sanctions-over-israels-humanitarian-city-proposal",
-    "source": "NewsAPI",
-    "region": "Middle East Conflict",
+    "title": "Rift deepening in Kerala Congress: K Muraleedharan snubs Shashi Tharoor over ‘nation first’ stand",
+    "url": "https://www.news9live.com/india/rift-deepening-in-kerala-congress-k-muraleedharan-snubs-shashi-tharoor-over-nation-first-stand-2878852",
+    "source": "news9live",
+    "region": "united kingdom",
     "priority": 3,
-    "publishedAt": "2025-07-16T14:00:42Z"
+    "publishedAt": "2025-07-21 02:43:00"
   },
   {
-    "title": "Panic and Stampede at Gaza Aid Distribution: Over 20 People Tragically Killed",
-    "url": "https://nep123.com/panic-and-stampede-at-gaza-aid-distribution-over-20-people-tragically-killed/",
-    "source": "NewsAPI",
-    "region": "Middle East Conflict",
+    "title": "Family Feud: The Little Dreamers vs Kiddowockeez",
+    "url": "https://www.gmanetwork.com/entertainment/videos/family-feud-the-little-dreamers-vs-kiddowockeez/288780",
+    "source": "gmanetwork",
+    "region": "philippines",
     "priority": 3,
-    "publishedAt": "2025-07-16T11:22:51Z"
+    "publishedAt": "2025-07-21 02:42:49"
   },
   {
-    "title": "At least one dead as South Korea rain toll rises to 11",
-    "url": "https://www.japantimes.co.jp/news/2025/07/20/asia-pacific/south-korea-rain-deaths/",
-    "source": "NewsAPI",
-    "region": "Global Breaking",
-    "priority": 4,
-    "publishedAt": "2025-07-20T02:23:00Z"
+    "title": "Travis Scott and Cactus Jack's 'JACKBOYS 2' Debuts at No. 1",
+    "url": "https://hypebeast.com/2025/7/travis-scott-jackboys-2-no-1-justin-bieber-swag-no-2-clipse-let-god-sort-em-out-no-4-debut-billboard-200",
+    "source": "hypebeast_uk",
+    "region": "united kingdom",
+    "priority": 3,
+    "publishedAt": "2025-07-21 02:42:08"
   },
   {
-    "title": "Cristiano Ronaldo’s lifelong friend named Al-Nassr CEO – Sends three-word tribute as club enters new era in Saudi Pro League",
-    "url": "https://worldsoccertalk.com/news/cristiano-ronaldos-lifelong-friend-named-al-nassr-ceo-sends-three-word-tribute-as-club-enters-new-era-in-saudi-pro-league/",
-    "source": "NewsAPI",
-    "region": "Global Breaking",
-    "priority": 4,
-    "publishedAt": "2025-07-20T00:54:09Z"
+    "title": "WALANG PASOK: LGUs suspend classes due to habagat on 21 July",
+    "url": "https://tribune.net.ph/2025/07/21/walang-pasok-lgus-suspend-classes-due-to-habagat-on-21-july",
+    "source": "tribune",
+    "region": "philippines",
+    "priority": 3,
+    "publishedAt": "2025-07-21 02:41:49"
   },
   {
-    "title": "Zach Cregger Addresses His Upcoming Resident Evil Film",
-    "url": "https://bleedingcool.com/movies/zach-cregger-addresses-his-upcoming-resident-evil-film/",
-    "source": "NewsAPI",
-    "region": "Global Breaking",
-    "priority": 4,
-    "publishedAt": "2025-07-20T00:53:03Z"
+    "title": "Kitchener Rangers Announce Roster Changes For The 2025-26 Season, Two NHL Prospects Set To Return",
+    "url": "https://thehockeynews.com/ohl/latest-news/kitchener-rangers-announce-roster-changes-for-the-2025-26-season-two-nhl-prospects-set-to-return",
+    "source": "yahoo",
+    "region": "united states of america",
+    "priority": 3,
+    "publishedAt": "2025-07-21 02:41:16"
   },
   {
-    "title": "EDITORIAL: The struggle for Tasmanian pride: A call for change",
-    "url": "https://www.theadvocate.com.au/story/9015218/editorial-the-struggle-for-tasmanian-pride-a-call-for-change/",
-    "source": "NewsAPI",
-    "region": "Global Breaking",
-    "priority": 4,
-    "publishedAt": "2025-07-19T23:07:50Z"
-  },
-  {
-    "title": "‘The right place to be’: Ayala assumes leadership role at Fort Worth Report as new hires, promotion announced",
-    "url": "https://fortworthreport.org/2025/07/19/the-right-place-to-be-ayala-assumes-leadership-role-at-fort-worth-report-as-new-hires-promotion-announced/",
-    "source": "NewsAPI",
-    "region": "Global Breaking",
-    "priority": 4,
-    "publishedAt": "2025-07-19T20:51:35Z"
-  },
-  {
-    "title": "Why We’re Going to These 7 Disney World Restaurants in August",
-    "url": "https://allears.net/2025/07/19/why-were-going-to-these-7-disney-world-restaurants-in-august/",
-    "source": "NewsAPI",
-    "region": "Global Breaking",
-    "priority": 4,
-    "publishedAt": "2025-07-19T20:42:05Z"
-  },
-  {
-    "title": "BREAKING: Disney Resort To Shut Down Completely Ahead of Immerging Disturbance",
-    "url": "https://insidethemagic.net/2025/07/disney-resort-closing-down-weather-warning-emd1/",
-    "source": "NewsAPI",
-    "region": "Global Breaking",
-    "priority": 4,
-    "publishedAt": "2025-07-19T19:52:39Z"
-  },
-  {
-    "title": "2025 Open Championship picks, odds: Rory McIlroy leads golfers capable of catching soaring Scottie Scheffler",
-    "url": "https://www.cbssports.com/golf/news/2025-open-championship-picks-odds-rory-mcilroy-leads-golfers-capable-of-catching-soaring-scottie-scheffler/",
-    "source": "NewsAPI",
-    "region": "Global Breaking",
-    "priority": 4,
-    "publishedAt": "2025-07-19T19:45:50Z"
+    "title": "“Don’t want to talk to you, you hit my father...’: Harbhajan Singh recalls a heartfelt conversation with...",
+    "url": "https://www.india.com/sports/dont-want-to-talk-to-you-you-hit-my-father-harbhajan-singh-recalls-a-heartfelt-conversation-with-sreesanths-daughter-7958190/",
+    "source": "india",
+    "region": "india",
+    "priority": 3,
+    "publishedAt": "2025-07-21 02:40:58"
   }
 ]

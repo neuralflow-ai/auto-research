@@ -1,15 +1,17 @@
+require('dotenv').config();
 console.log('Starting WhatsApp bot...');
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
-const { generateUrduScript } = require('./ai');
+const { generateUrduScript, translateToEnglish, checkScriptRelevance } = require('./ai');
 const { getVisualLinks } = require('./visuals');
 const axios = require('axios');
-const { NEWSAPI_KEY } = require('./config');
+const { NEWSAPI_KEY, NEWSDATA_API_KEY } = require('./config');
 const fs = require('fs');
 const path = require('path');
 const AGENDA_FILE = path.join(__dirname, '../agenda.json');
 
 console.log('[DEBUG] NEWSAPI_KEY:', NEWSAPI_KEY ? NEWSAPI_KEY.slice(0, 6) + '...' : 'NOT SET');
+console.log('[DEBUG] NEWSDATA_API_KEY:', NEWSDATA_API_KEY ? NEWSDATA_API_KEY.slice(0, 6) + '...' : 'NOT SET');
 
 // Helper function to calculate time ago
 function getTimeAgo(publishedAt) {
@@ -28,7 +30,6 @@ function getTimeAgo(publishedAt) {
         return `${diffDays} دن پہلے`;
     }
 }
-
 // Function to fetch Yahoo News as fallback
 async function fetchYahooNews() {
     try {
@@ -183,8 +184,10 @@ function waitForPerplexityReply(client, matchFn, timeoutMs = 90000) {
     return new Promise((resolve, reject) => {
         let timeout;
         const handler = async (msg) => {
-            console.log('[DEBUG] Message received in waitForPerplexityReply:', msg.from, msg.body.substring(0, 100) + '...');
-            
+            const msgTime = msg.timestamp ? new Date(Number(msg.timestamp) * 1000).toISOString() : new Date().toISOString();
+            console.log(`[DEBUG] Message received in waitForPerplexityReply at ${msgTime}:`, msg.from, msg.body.substring(0, 100) + '...');
+            // Log the full message for debugging
+            console.log('[DEBUG] Full Perplexity reply:', msg.body);
             const isFromPerplexity = msg.from === '18334363285@s.whatsapp.net' || 
                                    msg.from.includes('perplexity') || 
                                    msg.from.includes('18334363285') ||
@@ -195,10 +198,8 @@ function waitForPerplexityReply(client, matchFn, timeoutMs = 90000) {
                                      msg.body.includes('ویژن پوائنٹ'))) ||
                                    (msg.body && msg.body.length > 100 && /https?:\/\//.test(msg.body)) ||
                                    msg.from === '18334363285@s.whatsapp.net';
-            
             if (isFromPerplexity) {
-                console.log('[Perplexity Reply]', msg.body);
-                if (matchFn(msg.body)) {
+                if (matchFn(msg.body, msg)) {
                     client.removeListener('message', handler);
                     clearTimeout(timeout);
                     resolve(msg.body);
@@ -345,6 +346,28 @@ function seriousScriptPrompt(topic, url = '') {
 ${url}`;
 }
 
+// Remove Yahoo News fallback logic and add NewsData.io fallback
+
+async function fetchNewsDataIO(query = 'latest') {
+    try {
+        const url = `https://newsdata.io/api/1/news?apikey=${NEWSDATA_API_KEY}&language=ur,en&q=${encodeURIComponent(query)}`;
+        const response = await axios.get(url);
+        if (response.data && response.data.results && response.data.results.length > 0) {
+            return response.data.results.map(article => ({
+                title: article.title,
+                url: article.link,
+                source: article.source_id || 'NewsData.io',
+                region: (article.country && article.country.length > 0 ? article.country[0] : 'Global'),
+                priority: 3,
+                publishedAt: article.pubDate || new Date().toISOString(),
+            }));
+        }
+    } catch (err) {
+        console.error('[NEWSDATA.IO] Error fetching news:', err.message);
+    }
+    return [];
+}
+
 client.on('message', async (message) => {
     console.log('[DEBUG] Message received:', message.body);
 
@@ -374,20 +397,60 @@ client.on('message', async (message) => {
             console.log('[DEBUG] Selected agenda item:', agenda);
             await message.reply(`⏳ اسکرپٹ اور ویژولز تیار ہو رہے ہیں: ${agenda.title}`);
             
-            // Generate script using Perplexity
-            const scriptPrompt = seriousScriptPrompt(agenda.title, agenda.url);
-            
+            // Generate script using Perplexity with unique code marker
+            const uniqueCode = Math.floor(1000 + Math.random() * 9000).toString();
+            const scriptPrompt = seriousScriptPrompt(
+                agenda.title +
+                `\n\nبراہ کرم اسکرپٹ کے آخر میں یہ کوڈ ضرور لکھیں: ${uniqueCode}\nPlease write this code at the end of the script: ${uniqueCode}`
+            );
             await message.reply('⏳ Sending your content to Perplexity for script generation...');
             await sendToPerplexity(client, scriptPrompt);
+            // Wait 2 seconds before listening for replies to avoid picking up late replies
+            await new Promise(res => setTimeout(res, 2000));
             let script = '';
-            try {
-                script = await waitForPerplexityReply(client, (body) => body.length > 200, 60000);
+            let attempts = 0;
+            const maxAttempts = 3;
+            let scriptRelevant = false;
+            let lastError = null;
+            while (attempts < maxAttempts && !scriptRelevant) {
+                try {
+                    // Only accept reply if it contains the unique code
+                    script = await waitForPerplexityReply(client, (body) => body.length > 50 && body.includes(uniqueCode), 60000);
+                    // Remove the code from the script before sending to user
+                    script = script.replace(uniqueCode, '').trim();
+                    // Translate topic and script to English
+                    const topicEn = await translateToEnglish(agenda.title);
+                    const scriptEn = await translateToEnglish(script);
+                    // Check if script is relevant to the topic using Gemini
+                    scriptRelevant = await checkScriptRelevance(topicEn, scriptEn);
+                    if (!scriptRelevant) {
+                        await message.reply('⚠️ Script was not relevant to the topic (Gemini check), retrying Perplexity...');
+                        if (attempts < maxAttempts - 1) {
+                            await sendToPerplexity(client, scriptPrompt);
+                            await new Promise(res => setTimeout(res, 2000));
+                        }
+                    }
+                } catch (err) {
+                    lastError = err;
+                    console.error('[DEBUG] Script generation error:', err.message);
+                    script = '';
+                    if (attempts < maxAttempts - 1) {
+                        await message.reply('⚠️ Perplexity did not respond, retrying...');
+                        await sendToPerplexity(client, scriptPrompt);
+                        await new Promise(res => setTimeout(res, 2000));
+                    }
+                }
+                attempts++;
+            }
+            if (scriptRelevant && script) {
                 console.log('[DEBUG] Script received from Perplexity, length:', script.length);
                 await message.reply(`📰 **Vision Point News Script**\n\n${script}`);
-            } catch (err) {
-                console.error('[DEBUG] Script generation error:', err.message);
+                lastGeneratedScript = script;
+            } else {
+                // If Gemini says not relevant after all attempts, use Gemini to generate the script with the same topic
                 try {
-                    script = await generateUrduScript(agenda.title + '\n' + agenda.url);
+                    const fallbackPrompt = agenda.title;
+                    script = await generateUrduScript(fallbackPrompt);
                     await message.reply(`📰 **Vision Point News Script**\n\n${script}`);
                 } catch (fallbackErr) {
                     script = '❌ Could not generate script. Please try again later.';
@@ -788,22 +851,21 @@ client.on('message', async (message) => {
                 } catch (newsApiError) {
                     console.error('[DEBUG] NewsAPI failed:', newsApiError.message);
                     console.error('[DEBUG] NewsAPI error details:', newsApiError.response?.status, newsApiError.response?.data);
-                    await message.reply('⚠️ NewsAPI request failed. Trying Yahoo News as fallback...');
-                    
-                    // Try Yahoo News RSS feeds as fallback
+                    await message.reply('⚠️ NewsAPI request failed. Trying NewsData.io as fallback...');
+                    // Try NewsData.io as fallback
                     try {
-                        console.log('[DEBUG] Fetching Yahoo News as fallback...');
-                        const yahooNews = await fetchYahooNews();
-                        if (yahooNews && yahooNews.length > 0) {
-                            newsResults = yahooNews;
-                            console.log('[DEBUG] Yahoo News fallback successful:', yahooNews.length, 'articles');
-                            await message.reply('✅ Yahoo News fallback successful!');
+                        const newsDataNews = await fetchNewsDataIO();
+                        if (newsDataNews && newsDataNews.length > 0) {
+                            newsResults = newsDataNews;
+                            console.log('[DEBUG] NewsData.io fallback successful:', newsDataNews.length, 'articles');
+                            console.log('[DEBUG] NewsData.io articles:', JSON.stringify(newsDataNews, null, 2));
+                            await message.reply('✅ NewsData.io fallback successful!');
                         } else {
-                            throw new Error('No Yahoo News articles found');
+                            throw new Error('No NewsData.io articles found');
                         }
-                    } catch (yahooError) {
-                        console.error('[DEBUG] Yahoo News fallback also failed:', yahooError.message);
-                        await message.reply('⚠️ Both NewsAPI and Yahoo News failed. Using static fallback news.');
+                    } catch (newsDataError) {
+                        console.error('[DEBUG] NewsData.io fallback also failed:', newsDataError.message);
+                        await message.reply('⚠️ Both NewsAPI and NewsData.io failed. Using static fallback news.');
                         newsResults = [
                             {
                                 title: 'Breaking: Latest developments in Pakistan',
@@ -843,12 +905,12 @@ client.on('message', async (message) => {
             
             // Check if we got enough news from NewsAPI
             if (uniqueNews.length < 5) {
-                console.log('[DEBUG] NewsAPI returned insufficient results, trying Yahoo News fallback...');
+                console.log('[DEBUG] NewsAPI returned insufficient results, trying NewsData.io fallback...');
                 try {
-                    const yahooNews = await fetchYahooNews();
-                    if (yahooNews && yahooNews.length > 0) {
-                        // Combine NewsAPI and Yahoo News results
-                        const combinedNews = [...uniqueNews, ...yahooNews];
+                    const newsDataNews = await fetchNewsDataIO();
+                    if (newsDataNews && newsDataNews.length > 0) {
+                        // Combine NewsAPI and NewsData.io results
+                        const combinedNews = [...uniqueNews, ...newsDataNews];
                         const finalCombinedNews = combinedNews.filter((item, index, self) => 
                             index === self.findIndex(t => t.title === item.title)
                         );
@@ -860,22 +922,31 @@ client.on('message', async (message) => {
                             return new Date(b.publishedAt) - new Date(a.publishedAt);
                         });
                         
-                        console.log('[DEBUG] Combined NewsAPI + Yahoo News results:', finalCombinedNews.length);
+                        console.log('[DEBUG] Combined NewsAPI + NewsData.io results:', finalCombinedNews.length);
                         uniqueNews.length = 0; // Clear and replace
                         uniqueNews.push(...finalCombinedNews);
                     }
-                } catch (yahooError) {
-                    console.log('[DEBUG] Yahoo News fallback failed:', yahooError.message);
+                } catch (newsDataError) {
+                    console.log('[DEBUG] NewsData.io fallback failed:', newsDataError.message);
                 }
             }
             
             // Ensure good mix: Pakistan + Super Powers + Middle East + Global
-            const pakistanNews = uniqueNews.filter(item => item.region === 'Pakistan' || item.region === 'Pakistan Breaking').slice(0, 8);
-            const superPowersNews = uniqueNews.filter(item => item.region === 'Super Powers').slice(0, 8);
-            const middleEastNews = uniqueNews.filter(item => item.region === 'Middle East Conflict').slice(0, 6);
-            const globalNews = uniqueNews.filter(item => item.region === 'Global Breaking' || item.region === 'Asia-Pacific').slice(0, 8);
+            const pakistanNews = uniqueNews.filter(item => item.region === 'Pakistan' || item.region === 'Pakistan Breaking');
+            const superPowersNews = uniqueNews.filter(item => item.region === 'Super Powers');
+            const middleEastNews = uniqueNews.filter(item => item.region === 'Middle East Conflict');
+            const globalNews = uniqueNews.filter(item => item.region === 'Global Breaking' || item.region === 'Asia-Pacific' || item.region === 'Global');
             
-            const finalNews = [...pakistanNews, ...superPowersNews, ...middleEastNews, ...globalNews].slice(0, 30);
+            // Combine all news without slicing, to show all articles
+            let finalNews = [...pakistanNews, ...superPowersNews, ...middleEastNews, ...globalNews];
+            
+            // If NewsData.io was used, or if finalNews is empty, just show all uniqueNews
+            if (
+              (newsResults && newsResults.length > 0 && newsResults[0].source === 'NewsData.io') ||
+              finalNews.length === 0
+            ) {
+              finalNews = uniqueNews;
+            }
             
             latestAgendaItems = finalNews;
             
@@ -911,21 +982,64 @@ client.on('message', async (message) => {
     if (/topic\s*:/i.test(message.body)) {
         console.log('[DEBUG] Processing topic command from:', message.from);
         const userContent = message.body;
-        
-        const scriptPrompt = seriousScriptPrompt(userContent.replace(/topic\s*:\s*/i, '').trim());
-
+        // Generate a unique 4-digit code for this topic
+        const uniqueCode = Math.floor(1000 + Math.random() * 9000).toString();
+        const cleanTopic = userContent.replace(/topic\s*:\s*/i, '').trim();
+        // Add explicit Urdu and English instruction to include the code at the end
+        const scriptPrompt = seriousScriptPrompt(
+          cleanTopic +
+          `\n\nبراہ کرم اسکرپٹ کے آخر میں یہ کوڈ ضرور لکھیں: ${uniqueCode}\nPlease write this code at the end of the script: ${uniqueCode}`
+        );
+        // Record the time the prompt was sent
+        const promptSentTime = Date.now();
         await message.reply('⏳ Sending your content to Perplexity for script generation...');
         await sendToPerplexity(client, scriptPrompt);
+        // Wait 2 seconds before listening for replies to avoid picking up late replies
+        await new Promise(res => setTimeout(res, 2000));
         let script = '';
-        try {
-            script = await waitForPerplexityReply(client, (body) => body.length > 50, 60000);
+        let attempts = 0;
+        const maxAttempts = 3;
+        let scriptRelevant = false;
+        let lastError = null;
+        while (attempts < maxAttempts && !scriptRelevant) {
+            try {
+                // Only accept reply if it contains the unique code
+                script = await waitForPerplexityReply(client, (body) => body.length > 50 && body.includes(uniqueCode), 60000);
+                // Remove the code from the script before sending to user
+                script = script.replace(uniqueCode, '').trim();
+                // Translate topic and script to English
+                const topicEn = await translateToEnglish(cleanTopic);
+                const scriptEn = await translateToEnglish(script);
+                // Check if script is relevant to the topic using Gemini
+                scriptRelevant = await checkScriptRelevance(topicEn, scriptEn);
+                if (!scriptRelevant) {
+                    await message.reply('⚠️ Script was not relevant to the topic (Gemini check), retrying Perplexity...');
+                    if (attempts < maxAttempts - 1) {
+                        await sendToPerplexity(client, scriptPrompt);
+                        await new Promise(res => setTimeout(res, 2000));
+                    }
+                }
+            } catch (err) {
+                lastError = err;
+                console.error('[DEBUG] Script generation error:', err.message);
+                script = '';
+                if (attempts < maxAttempts - 1) {
+                    await message.reply('⚠️ Perplexity did not respond, retrying...');
+                    await sendToPerplexity(client, scriptPrompt);
+                    await new Promise(res => setTimeout(res, 2000));
+                }
+            }
+            attempts++;
+        }
+        if (scriptRelevant && script) {
             console.log('[DEBUG] Script received from Perplexity, length:', script.length);
             await message.reply(`📰 **Vision Point News Script**\n\n${script}`);
             lastGeneratedScript = script;
-        } catch (err) {
-            console.error('[DEBUG] Script generation error:', err.message);
+        } else {
+            // If Gemini says not relevant after all attempts, use Gemini to generate the script with the same topic
             try {
-                script = await generateUrduScript(userContent);
+                const fallbackPrompt = cleanTopic;
+                script = await generateUrduScript(fallbackPrompt);
                 await message.reply(`📰 **Vision Point News Script**\n\n${script}`);
             } catch (fallbackErr) {
                 script = '❌ Could not generate script. Please try again later.';
@@ -938,7 +1052,7 @@ client.on('message', async (message) => {
         await message.reply('🎬 Generating visuals and sources...');
         
         try {
-            const visualLinks = await getVisualsWithPerplexityFallback(client, userContent.replace(/topic\s*:\s*/i, '').trim(), message, script);
+            const visualLinks = await getVisualsWithPerplexityFallback(client, cleanTopic, message, script);
             if (visualLinks && visualLinks.length > 0) {
                 let visualsText = `🎬 **Visuals & Sources**\n\n`;
                 const youtubeLinks = visualLinks.filter(link => link.type === 'youtube');

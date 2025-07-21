@@ -8,4 +8,5 @@ module.exports = {
   GOOGLE_CSE_API_KEY: process.env.GOOGLE_CSE_API_KEY || 'AIzaSyAZbuNtPl0jY9xxBCFL2VOveMXvZRCPIzY',
   GOOGLE_CSE_ID: process.env.GOOGLE_CSE_ID,
   NEWSAPI_KEY: process.env.NEWSAPI_KEY,
+  NEWSDATA_API_KEY: process.env.NEWSDATA_API_KEY, // Add this line for NewsData.io
 }; 
