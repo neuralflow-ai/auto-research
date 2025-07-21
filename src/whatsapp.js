@@ -1280,3 +1280,13 @@ TOPIC: پاک فوج کی شاندار کامیابی\nTOPIC: پاکستان م�
 
 client.initialize();
 console.log('Client initialization called.'); 
+
+// Dummy HTTP server for Render deployment health checks
+const http = require('http');
+const PORT = process.env.PORT || 3000;
+http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end('WhatsApp bot is running\n');
+}).listen(PORT, '0.0.0.0', () => {
+  console.log(`Dummy HTTP server listening on port ${PORT}`);
+});
