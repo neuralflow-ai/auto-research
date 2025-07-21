@@ -1,0 +1,34 @@
+2025/07/20-19:35:09.160 f04 Reusing MANIFEST C:\Users\The Laptop Hut\Downloads\auto\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2025/07/20-19:35:09.161 f04 Recovering log #145
+2025/07/20-19:35:09.242 f04 Reusing old log C:\Users\The Laptop Hut\Downloads\auto\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000145.log 
+2025/07/20-19:35:12.949 3f50 Level-0 table #153: started
+2025/07/20-19:35:12.958 3f50 Level-0 table #153: 266319 bytes OK
+2025/07/20-19:35:12.959 3f50 Delete type=0 #145
+2025/07/20-19:35:12.961 3f50 Manual compaction at level-0 from '\x00#\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00$\x00\x00\x00' @ 0 : 0; will stop at (end)
+2025/07/20-19:35:15.296 3f50 Compacting 1@1 + 4@2 files
+2025/07/20-19:35:15.411 3f50 Generated table #154@1: 57509 keys, 2238451 bytes
+2025/07/20-19:35:15.458 3f50 Generated table #155@1: 1684 keys, 2149119 bytes
+2025/07/20-19:35:15.524 3f50 Generated table #156@1: 18724 keys, 2180281 bytes
+2025/07/20-19:35:15.633 3f50 Generated table #157@1: 70667 keys, 1731005 bytes
+2025/07/20-19:35:15.633 3f50 Compacted 1@1 + 4@2 files => 8298856 bytes
+2025/07/20-19:35:15.633 3f50 compacted to: files[ 0 0 4 0 0 0 0 ]
+2025/07/20-19:35:15.634 3f50 Delete type=2 #147
+2025/07/20-19:35:15.634 3f50 Delete type=2 #148
+2025/07/20-19:35:15.634 3f50 Delete type=2 #149
+2025/07/20-19:35:15.634 3f50 Delete type=2 #150
+2025/07/20-19:35:15.634 3f50 Delete type=2 #153
+2025/07/20-19:35:54.541 3f50 Level-0 table #159: started
+2025/07/20-19:35:54.583 3f50 Level-0 table #159: 1483497 bytes OK
+2025/07/20-19:35:54.584 3f50 Delete type=0 #152
+2025/07/20-19:35:54.779 3f44 Compacting 1@1 + 4@2 files
+2025/07/20-19:35:55.055 3f44 Generated table #160@1: 60569 keys, 2244238 bytes
+2025/07/20-19:35:55.099 3f44 Generated table #161@1: 1622 keys, 2145501 bytes
+2025/07/20-19:35:55.251 3f44 Generated table #162@1: 18734 keys, 2181046 bytes
+2025/07/20-19:35:55.381 3f44 Generated table #163@1: 76000 keys, 2032956 bytes
+2025/07/20-19:35:55.381 3f44 Compacted 1@1 + 4@2 files => 8603741 bytes
+2025/07/20-19:35:55.382 3f44 compacted to: files[ 0 0 4 0 0 0 0 ]
+2025/07/20-19:35:55.382 3f44 Delete type=2 #154
+2025/07/20-19:35:55.382 3f44 Delete type=2 #155
+2025/07/20-19:35:55.382 3f44 Delete type=2 #156
+2025/07/20-19:35:55.382 3f44 Delete type=2 #157
+2025/07/20-19:35:55.382 3f44 Delete type=2 #159
